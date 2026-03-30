@@ -10,7 +10,10 @@ Este proyecto simula una API real de backend, aplicando buenas prácticas como:
 
 - Arquitectura modular con NestJS
 - Autenticación con JWT
+- Autorización basada en roles (RBAC)
 - Hash de contraseñas con bcrypt
+- Validación de datos con class-validator
+- Documentación automática con Swagger
 - Uso de variables de entorno (.env)
 - Persistencia con PostgreSQL y TypeORM
 
@@ -24,6 +27,8 @@ Este proyecto simula una API real de backend, aplicando buenas prácticas como:
 - PostgreSQL
 - JWT (JSON Web Tokens)
 - bcrypt
+- class-validator
+- Swagger
 
 ---
 
@@ -32,9 +37,11 @@ Este proyecto simula una API real de backend, aplicando buenas prácticas como:
 - Registro de usuarios
 - Login con JWT
 - Protección de rutas con Guards
+- Autorización por roles (ADMIN / USER)
 - CRUD completo de usuarios
 - Hash seguro de contraseñas
-- Configuración mediante variables de entorno
+- Validación de datos en DTOs
+- Documentación interactiva con Swagger
 
 ---
 
@@ -80,11 +87,11 @@ Auth
   POST /auth/login
 
 Users
-  POST /users
-  GET /users (protegido)
+  POST /users → registro
+  GET /users → solo ADMIN
   GET /users/:id
   PATCH /users/:id
-  DELETE /users/:id
+  DELETE /users/:id → solo ADMIN
 
 ---
 
@@ -95,12 +102,43 @@ Authorization: Bearer <token>
 
 ---
 
+## Autorización
+
+Se implementa control de acceso basado en roles:
+  USER → acceso limitado
+  ADMIN → acceso completo
+
+Ejemplo:
+  GET /users → solo ADMIN
+  DELETE /users → solo ADMIN
+
+---
+
+## Documentación API
+
+La API cuenta con documentación interactiva usando Swagger:
+  http://localhost:3000/api
+
+Permite:
+  Probar endpoints
+  Ver estructura de requests
+  Autenticarse con JWT
+
+---
+
+## Testing
+
+Se recomienda utilizar Postman o Swagger UI para probar los endpoints.
+
+---
+
 ## Mejoras futuras
 
 Refresh tokens
-Roles y permisos
-Documentación con Swagger
-Deploy en la nube
+Roles más avanzados (permissions)
+Rate limiting
+Logging
+Deploy en la nube (Railway / AWS / Render)
 
 ---
 

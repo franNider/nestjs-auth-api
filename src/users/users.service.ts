@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { Role } from '../role/entities/role.entity';
 
 @Injectable()
 export class UsersService {
@@ -13,16 +14,24 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+  
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     //Hashear password
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-
+    
+    const role = await this.roleRepository.findOneBy({ name: 'USER' });
+    if (!role) {
+      throw new Error('Role USER no existe');
+    }
     //Crear usuario
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
+      role,
     });
 
     //Guardar en DB
@@ -30,11 +39,16 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['role'],
+    });
   }
 
   async findOne(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['role'],
+    });
 
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
@@ -43,8 +57,11 @@ export class UsersService {
     return user;
   }
 
-  findByEmail(email: string) {
-    return this.userRepository.findOneBy({ email });
+  async findByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['role'],
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
