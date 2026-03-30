@@ -84,45 +84,45 @@ npm run start:dev
 ## Endpoints principales
 
 Auth
-  -POST /auth/login
+  - POST /auth/login
 
 Users
-  -POST /users → registro
-  -GET /users → solo ADMIN
-  -GET /users/:id
-  -PATCH /users/:id
-  -DELETE /users/:id → solo ADMIN
+  - POST /users → registro
+  - GET /users → solo ADMIN
+  - GET /users/:id
+  - PATCH /users/:id
+  - DELETE /users/:id → solo ADMIN
 
 ---
 
 ## Autenticación
 
 Las rutas protegidas requieren un token JWT en el header:
--Authorization: Bearer <token>
+- Authorization: Bearer <token>
 
 ---
 
 ## Autorización
 
 Se implementa control de acceso basado en roles:
-  -USER → acceso limitado
-  -ADMIN → acceso completo
+  - USER → acceso limitado
+  - ADMIN → acceso completo
 
 Ejemplo:
-  -GET /users → solo ADMIN
-  -DELETE /users → solo ADMIN
+  - GET /users → solo ADMIN
+  - DELETE /users → solo ADMIN
 
 ---
 
 ## Documentación API
 
 La API cuenta con documentación interactiva usando Swagger:
-  -http://localhost:3000/api
+  - http://localhost:3000/api
 
 Permite:
-  -Probar endpoints
-  -Ver estructura de requests
-  -Autenticarse con JWT
+  - Probar endpoints
+  - Ver estructura de requests
+  - Autenticarse con JWT
 
 ---
 
@@ -134,11 +134,11 @@ Se recomienda utilizar Postman o Swagger UI para probar los endpoints.
 
 ## Mejoras futuras
 
--Refresh tokens
--Roles más avanzados (permissions)
--Rate limiting
--Logging
--Deploy en la nube (Railway / AWS / Render)
+- Refresh tokens
+- Roles más avanzados (permissions)
+- Rate limiting
+- Logging
+- Deploy en la nube (Railway / AWS / Render)
 
 ---
 
