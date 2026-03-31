@@ -9,8 +9,9 @@ Backend API desarrollada con NestJS que implementa autenticación con JWT, manej
 Este proyecto simula una API real de backend, aplicando buenas prácticas como:
 
 - Arquitectura modular con NestJS
-- Autenticación con JWT
+- Autenticación con JWT (Access + Refresh Tokens)
 - Autorización basada en roles (RBAC)
+- Manejo de sesiones con refresh tokens persistidos
 - Hash de contraseñas con bcrypt
 - Validación de datos con class-validator
 - Documentación automática con Swagger
@@ -35,7 +36,9 @@ Este proyecto simula una API real de backend, aplicando buenas prácticas como:
 ## Features
 
 - Registro de usuarios
-- Login con JWT
+- Login con Access Token + Refresh Token
+- Renovación de sesión con refresh token
+- Logout con invalidación de sesión
 - Protección de rutas con Guards
 - Autorización por roles (ADMIN / USER)
 - CRUD completo de usuarios
@@ -63,14 +66,15 @@ npm install
 3. Crear archivo .env:
 
 ```bash
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=password
-DB_NAME=nestdb
-
-JWT_SECRET=supersecret
-JWT_EXPIRES_IN=1h
+DB_HOST=localhost 
+DB_PORT=5432 
+DB_USER=postgres 
+DB_PASSWORD=password 
+DB_NAME=nestdb 
+JWT_SECRET=supersecret 
+JWT_EXPIRES_IN=1h 
+JWT_REFRESH_SECRET=refreshsecret 
+JWT_REFRESH_EXPIRES_IN=7d
 ```
 
 4. Ejecutar el proyecto:
@@ -84,21 +88,41 @@ npm run start:dev
 ## Endpoints principales
 
 Auth
-  POST /auth/login
+  - POST /auth/login
+  - POST /auth/refresh
+  - POST /auth/logout
 
 Users
-  POST /users → registro
-  GET /users → solo ADMIN
-  GET /users/:id
-  PATCH /users/:id
-  DELETE /users/:id → solo ADMIN
+  - POST /users → registro
+  - GET /users → solo ADMIN
+  - GET /users/:id
+  - PATCH /users/:id
+  - DELETE /users/:id → solo ADMIN
 
 ---
 
 ## Autenticación
 
-Las rutas protegidas requieren un token JWT en el header:
-Authorization: Bearer <token>
+El sistema utiliza:
+- Access Token (JWT) → corto plazo
+- Refresh Token → largo plazo, almacenado en base de datos (hasheado)
+
+---
+
+## Flujo de autenticación
+Login → devuelve:
+  - access_token
+  - refresh_token
+
+Acceso a rutas protegidas con:
+Authorization: Bearer <access_token>
+
+Renovación de sesión:
+POST /auth/refresh
+
+Logout:
+  - elimina el refresh token de la base de datos
+  - evita generar nuevos access tokens
 
 ---
 
@@ -132,13 +156,12 @@ Se recomienda utilizar Postman o Swagger UI para probar los endpoints.
 
 ---
 
-## Mejoras futuras
+## Seguridad
 
-Refresh tokens
-Roles más avanzados (permissions)
-Rate limiting
-Logging
-Deploy en la nube (Railway / AWS / Render)
+  - Contraseñas hasheadas con bcrypt
+  - Refresh tokens almacenados de forma segura (hasheados)
+  - Validación de credenciales sin revelar información sensible
+  - Separación entre access y refresh tokens
 
 ---
 

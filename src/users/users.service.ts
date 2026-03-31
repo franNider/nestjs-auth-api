@@ -83,4 +83,15 @@ export class UsersService {
 
     return { message: 'Usuario eliminado' };
   }
+
+  async updateRefreshToken(userId: number, refreshToken: string | null) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+
+    if (!user) return;
+
+    user.refreshToken = refreshToken;
+    await this.userRepository.save(user);
+  }
+
+
 }
