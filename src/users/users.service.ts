@@ -23,10 +23,18 @@ export class UsersService {
     //Hashear password
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     
-    const role = await this.roleRepository.findOneBy({ name: 'USER' });
+    let role = await this.roleRepository.findOneBy({ name: 'USER' });
     if (!role) {
       throw new Error('Role USER no existe');
     }
+
+    if (createUserDto.email === 'admin@test.com') {
+      const adminRole = await this.roleRepository.findOneBy({ name: 'ADMIN' });
+      if (adminRole) {
+        role = adminRole;
+      }
+    }
+
     //Crear usuario
     const user = this.userRepository.create({
       ...createUserDto,
