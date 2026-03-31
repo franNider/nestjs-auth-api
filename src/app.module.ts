@@ -20,7 +20,7 @@ import { RolesModule } from './role/role.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get<string>('DB_HOST')!,
-        port: parseInt(configService.get<string>('DB_PORT')!),
+        port: Number(configService.get<string>('DB_PORT')), 
         username: configService.get<string>('DB_USER')!,
         password: configService.get<string>('DB_PASSWORD')!,
         database: configService.get<string>('DB_NAME')!,
