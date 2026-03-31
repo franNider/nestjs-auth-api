@@ -89,8 +89,11 @@ npm run start:dev
 
 Auth
   - POST /auth/login
+<<<<<<< HEAD
   - POST /auth/refresh
   - POST /auth/logout
+=======
+>>>>>>> 5dde8c450fe04586e82c5509a951bab944724e36
 
 Users
   - POST /users → registro
@@ -103,6 +106,7 @@ Users
 
 ## Autenticación
 
+<<<<<<< HEAD
 El sistema utiliza:
 - Access Token (JWT) → corto plazo
 - Refresh Token → largo plazo, almacenado en base de datos (hasheado)
@@ -123,30 +127,34 @@ POST /auth/refresh
 Logout:
   - elimina el refresh token de la base de datos
   - evita generar nuevos access tokens
+=======
+Las rutas protegidas requieren un token JWT en el header:
+- Authorization: Bearer <token>
+>>>>>>> 5dde8c450fe04586e82c5509a951bab944724e36
 
 ---
 
 ## Autorización
 
 Se implementa control de acceso basado en roles:
-  USER → acceso limitado
-  ADMIN → acceso completo
+  - USER → acceso limitado
+  - ADMIN → acceso completo
 
 Ejemplo:
-  GET /users → solo ADMIN
-  DELETE /users → solo ADMIN
+  - GET /users → solo ADMIN
+  - DELETE /users → solo ADMIN
 
 ---
 
 ## Documentación API
 
 La API cuenta con documentación interactiva usando Swagger:
-  http://localhost:3000/api
+  - http://localhost:3000/api
 
 Permite:
-  Probar endpoints
-  Ver estructura de requests
-  Autenticarse con JWT
+  - Probar endpoints
+  - Ver estructura de requests
+  - Autenticarse con JWT
 
 ---
 
@@ -158,10 +166,18 @@ Se recomienda utilizar Postman o Swagger UI para probar los endpoints.
 
 ## Seguridad
 
+<<<<<<< HEAD
   - Contraseñas hasheadas con bcrypt
   - Refresh tokens almacenados de forma segura (hasheados)
   - Validación de credenciales sin revelar información sensible
   - Separación entre access y refresh tokens
+=======
+- Refresh tokens
+- Roles más avanzados (permissions)
+- Rate limiting
+- Logging
+- Deploy en la nube (Railway / AWS / Render)
+>>>>>>> 5dde8c450fe04586e82c5509a951bab944724e36
 
 ---
 
