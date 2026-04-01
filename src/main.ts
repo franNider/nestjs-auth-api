@@ -6,11 +6,13 @@ import { RoleService } from './role/role.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  await app.init();
+  
   const config = new DocumentBuilder()
   .setTitle('NestJS API')
   .setDescription('API con autenticación y roles')
   .setVersion('1.0')
-  .addBearerAuth() // 🔥 importante para JWT
+  .addBearerAuth() 
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -19,7 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const roleService = app.get(RoleService);
-
+  await roleService.seedRoles();
 
   app.enableCors();
 
