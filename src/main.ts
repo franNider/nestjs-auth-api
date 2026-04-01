@@ -6,7 +6,6 @@ import { RoleService } from './role/role.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.init();
   
   const config = new DocumentBuilder()
   .setTitle('NestJS API')
